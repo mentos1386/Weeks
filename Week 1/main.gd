@@ -1,5 +1,3 @@
-tool
-
 extends Spatial
 
 export(int) var chunk_size = 24
@@ -7,19 +5,27 @@ export(int) var refresh_triggger = 4
 
 var chunk = load("res://chunk.tscn")
 
-var noise
+var noise_color
+var noise_height
 
 var chunks = {}
 var create_chunks = []
 
 func _ready():
 	# Instantiate
-	noise = OpenSimplexNoise.new()
+	noise_color = OpenSimplexNoise.new()
+	noise_height = OpenSimplexNoise.new()
 	
 	# Configure
-	noise.seed = randi()
-	noise.octaves = 9
-	noise.period = 20.0
+	noise_color.seed = randi()
+	noise_color.octaves = 4
+	noise_color.period = 10
+	
+	noise_height.seed = randi()
+	noise_height.octaves = 4
+	noise_height.period = 10
+	noise_height.lacunarity = 20
+	noise_height.persistence = 0.1
 	
 	create_chunks.append(Vector3(-chunk_size,0,chunk_size))
 	create_chunks.append(Vector3(-chunk_size,0,0))
@@ -65,7 +71,8 @@ func _process(delta):
 		if not chunks[chunk_position.x].get(chunk_position.z):
 			var new_chunk = chunk.instance()
 			new_chunk.position = chunk_position
-			new_chunk.noise = noise
+			new_chunk.noise_height = noise_height
+			new_chunk.noise_color = noise_color
 			
 			$chunks.add_child(new_chunk)
 			

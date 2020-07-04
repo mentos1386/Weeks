@@ -9,6 +9,8 @@
 background_mode = 2
 background_sky = SubResource( 1 )
 fog_depth_begin = 0.0
+adjustment_enabled = true
+adjustment_saturation = 1.33
 
 [node name="Spatial" type="Spatial"]
 script = ExtResource( 1 )
